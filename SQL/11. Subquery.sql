@@ -21,3 +21,6 @@ group by gender
 ) as Agr_age
 ;
 
+select concat(first_name," ", last_name), age,
+(select avg(age) from employee_demographics) as avg_age
+from employee_demographics;
