@@ -84,9 +84,26 @@ set `date` = str_to_date(`date`, '%m/%d/%Y');
 alter table layoffs_staging2
 modify column `date` date;
 
+# Handling industry null values
+select *
+from layoffs_staging2
+where industry is Null
+or industry = '';
 
+update layoffs_staging2
+set industry = Null
+where industry = '';
 
+select *
+from layoffs_staging2
+where company like 'Airbnb%';
 
+update layoffs_staging2 t1
+join layoffs_staging2 t2
+	on t1.company = t2.company
+set t1.industry = t2.industry
+where t1.industry is Null
+and t2.industry is not Null;
 
 
 
