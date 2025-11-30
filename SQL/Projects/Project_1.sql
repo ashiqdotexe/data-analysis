@@ -105,8 +105,33 @@ set t1.industry = t2.industry
 where t1.industry is Null
 and t2.industry is not Null;
 
+select distinct industry
+from layoffs_staging2
+order by 1
+;
 
+update layoffs_staging2
+set industry = "Crypto"
+where industry like "Crypto%"
+;
 
+#remove any column that has null and we do not need them
+select *
+from layoffs_staging2
+where total_laid_off is Null and
+percentage_laid_off is Null
+;
+
+delete
+from layoffs_staging2
+where total_laid_off is Null and
+percentage_laid_off is Null;
+
+alter table layoffs_staging2
+drop column row_num;
+
+select *
+from layoffs_staging2;
 
 
 
