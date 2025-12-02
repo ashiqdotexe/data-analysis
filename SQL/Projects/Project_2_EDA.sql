@@ -34,7 +34,7 @@ FROM layoffs_staging2
 GROUP BY industry
 ORDER BY company_count DESC;
 
-#Rolling total_laid off -
+#Ranking top three company per year those laid of the most -
 
 with company_year as 
 (
@@ -54,6 +54,20 @@ from company_rank
 where ranking <=3;
 
 
+
+#Rolling total_laid of per month
+with rolling_total as 
+(
+select substr(`date`, 1, 7) as dates, sum(total_laid_off) as total_laid_off
+from layoffs_staging2
+where substr(`date`, 1, 7) is not Null
+group by substr(`date`, 1, 7)
+order by 1
+)
+select dates, total_laid_off, sum(total_laid_off)
+from rolling_total
+group by dates
+;
 
 
 
