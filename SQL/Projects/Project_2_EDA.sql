@@ -64,7 +64,7 @@ where substr(`date`, 1, 7) is not Null
 group by substr(`date`, 1, 7)
 order by 1
 )
-select dates, total_laid_off, sum(total_laid_off)
+select dates, total_laid_off, SUM(total_laid_off) OVER (ORDER BY dates ASC) as rolling_total_layoffs
 from rolling_total
 group by dates
 ;
