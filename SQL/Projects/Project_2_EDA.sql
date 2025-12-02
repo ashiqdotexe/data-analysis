@@ -110,13 +110,14 @@ WITH company_rankings AS (
         DENSE_RANK() OVER (
             PARTITION BY country 
             ORDER BY SUM(total_laid_off) DESC
-        ) AS rn
+        ) AS `rank`
     FROM layoffs_staging2
     GROUP BY country, company
 )
 SELECT *
 FROM company_rankings
-WHERE rn <= 5
+WHERE `rank` <= 3
 ORDER BY country, total_layoffs DESC;
+
 
 
