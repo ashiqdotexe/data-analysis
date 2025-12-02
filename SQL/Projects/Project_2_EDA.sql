@@ -76,8 +76,47 @@ group by dates
 order by 2 desc
 limit 1;
 
+WITH country_industry AS (
+    SELECT country,industry,SUM(total_laid_off) AS total_layoffs,ROW_NUMBER() OVER (
+            PARTITION BY country ORDER BY SUM(total_laid_off) DESC) AS rn
+    FROM layoffs_staging2
+    WHERE country IS NOT NULL AND industry IS NOT NULL
+    GROUP BY country, industry
+)
+SELECT country, industry, total_layoffs
+FROM country_industry
+WHERE rn = 1
+ORDER BY total_layoffs DESC;
+
+select country ,
+count(DISTINCT industry) as total_industry,
+SUM(total_laid_off) AS total_layoffs
+from layoffs_staging2
+group by country
+order by 2 desc;
+
+SELECT stage, SUM(total_laid_off) AS total_layoffs
+FROM layoffs_staging2
+GROUP BY stage
+order by total_layoffs desc
+;
 
 
-
+WITH company_rankings AS (
+    SELECT 
+        country,
+        company,
+        SUM(total_laid_off) AS total_layoffs,
+        DENSE_RANK() OVER (
+            PARTITION BY country 
+            ORDER BY SUM(total_laid_off) DESC
+        ) AS rn
+    FROM layoffs_staging2
+    GROUP BY country, company
+)
+SELECT *
+FROM company_rankings
+WHERE rn <= 5
+ORDER BY country, total_layoffs DESC;
 
 
