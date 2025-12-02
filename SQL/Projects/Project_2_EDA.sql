@@ -69,6 +69,12 @@ from rolling_total
 group by dates
 ;
 
+select substr(`date`, 1, 7) as dates, sum(total_laid_off) as total_laid_off
+from layoffs_staging2
+where substr(`date`, 1, 7) is not null
+group by dates
+order by 2 desc
+limit 1;
 
 
 
