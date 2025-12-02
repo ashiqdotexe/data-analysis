@@ -36,10 +36,22 @@ ORDER BY company_count DESC;
 
 #Rolling total_laid off -
 
-select company, sum(layoffs_staging2.total_laid_off) as total_off
+with company_year as 
+(
+select company, year(`date`) as years, sum(total_laid_off) as total_laid_off
 from layoffs_staging2
+group by company, year(`date`)
+),
+company_rank as
+(
+select company, years, total_laid_off, dense_rank() over(partition by years order by total_laid_off desc) as ranking
+from company_year
 where total_laid_off is not null
-group by company;
+and years is not null
+)
+select *
+from company_rank
+where ranking <=3;
 
 
 
