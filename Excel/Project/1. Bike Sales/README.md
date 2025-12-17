@@ -7,6 +7,9 @@ This project involves analyzing a bike sales dataset to understand customer demo
 - **`1.Bike Sales.xlsx`**: The raw dataset containing customer information.
 - **`1.Bike Sales .png`**: A snapshot of the final dashboard visualization.
 
+## 📸 Dashboard Snapshot
+![Bike Sales Dashboard](1.Bike%20Sales%20.png)
+
 ## 📝 Dataset Description
 The dataset contains information about customers, including:
 - **ID**: Unique identifier for each customer.
